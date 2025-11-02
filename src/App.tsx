@@ -7,7 +7,7 @@ import ContactFooter from '@components/ContactFooter';
 function App() {
 
   return (
-    <main className="bg-yellow-950 h-screen text-white">
+    <main className="">
       <LoadingSection />
       <Hero />
       <Menu />

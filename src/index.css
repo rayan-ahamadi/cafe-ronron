@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+html {
+  height: 100%;
+}
+
+@font-face {
+  font-family: "Clatonia";
+  font-style: normal;
+  font-weight: normal;
+  src: url("assets/fonts/Clatonia.ttf") format("truetype");
+}
+
+@theme {
+  /* Fonts */
+  --font-clatonia: "Clatonia", serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-poppins: "Poppins", sans-serif;
+
+  /* Couleurs principales */
+  --color-primary-100: #7b5e57;
+  --color-primary-200: #a2837c;
+  --color-primary-300: #4e3b37;
+  --color-primary-400: #33231f;
+
+  /* Couleurs d’accent */
+  --color-accent-100: #b5c99a;
+  --color-accent-200: #cfdeba;
+  --color-accent-300: #9ebd75;
+  --color-accent-400: #799b4b;
+
+  /* Couleurs de fond */
+  --color-bg-100: #f6efe7;
+  --color-bg-200: #eed9be;
+  --color-bg-300: #b4845c;
+  --color-bg-400: #5a3e2b;
+
+  /* Couleurs de texte (inversées par rapport à Figma) */
+  --color-text-100: #f5e9da;
+  --color-text-200: #7c6b5b;
+  --color-text-300: #4a3426;
+  --color-text-400: #2e1a10;
+}
+
+.hero-pattern {
+  background-image: url("assets/asfalt-light.png");
+  background-repeat: repeat;
+  background-size: auto;
+}
