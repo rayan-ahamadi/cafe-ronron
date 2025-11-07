@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import LogoLoading from '@assets/images/logoLoading.svg?react'
 import gsap from 'gsap'
 import MorphSVGPlugin from 'gsap/MorphSVGPlugin'
+import { useAnimationStore } from '../AnimationStore'
+
 
 gsap.registerPlugin(useGSAP, MorphSVGPlugin)
 
@@ -13,11 +15,13 @@ export default function LoadingSection() {
     const originalSteamsID = ["steam1-1", "steam2-1", "steam3-1"]
     const duplicataSteamsID = ["steam1-2", "steam2-2", "steam3-2"]
 
+    const { setLoadingHasAnimated } = useAnimationStore()
+
     useEffect(() => {
         duplicataSteamsID.forEach((id, index) => {
             document.getElementById(id).style.display = "hidden"
         })
-    })
+    }, [])
 
     useGSAP(() => {
         originalSteamsID.forEach((id, index) => {
@@ -38,6 +42,8 @@ export default function LoadingSection() {
         const splitCafeGroup = document.getElementById(textCafeGroupId)?.childNodes
         const splitRonronGroup = document.getElementById(textRonronGroupId)?.childNodes
 
+        console.log(splitCafeGroup, splitRonronGroup)
+
         gsap.from(logoRef.current, {
             opacity: 0,
             scale: 0.5,
@@ -45,24 +51,33 @@ export default function LoadingSection() {
             ease: "back.inOut"
         })
 
-        const svgTextTimeline = gsap.timeline()
+        const svgTextTimeline = gsap.timeline({
+            onComplete: () => setLoadingHasAnimated(true)
+        })
         svgTextTimeline
             .from(splitCafeGroup, {
                 opacity: 0,
                 duration: 0.5,
                 ease: "linear.inOut",
+                y: 5,
                 stagger: 0.1
-            })
+            }, "+=0.5")
             .from(splitRonronGroup, {
                 opacity: 0,
                 duration: 0.5,
                 ease: "linear.inOut",
+                y: -5,
                 stagger: 0.1
-            })
+            }, "+=0.2")
             .to(sectionRef.current, {
                 transform: "translateY(-100%)",
-                duration: 0.8,
+                duration: 0.5,
             }, "+=0.5")
+
+
+        return () => {
+            svgTextTimeline.kill()
+        }
 
     }, { scope: sectionRef })
 
