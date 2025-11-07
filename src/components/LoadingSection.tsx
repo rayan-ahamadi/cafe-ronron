@@ -52,6 +52,7 @@ export default function LoadingSection() {
         })
 
         const svgTextTimeline = gsap.timeline({
+            onStart: () => console.log("Animation started"),
             onComplete: () => setLoadingHasAnimated(true)
         })
         svgTextTimeline
@@ -68,7 +69,7 @@ export default function LoadingSection() {
                 ease: "linear.inOut",
                 y: -5,
                 stagger: 0.1
-            }, "+=0.2")
+            })
             .to(sectionRef.current, {
                 transform: "translateY(-100%)",
                 duration: 0.5,

@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import LogoCafeRonron from '@assets/images/LogoCafeRonron.svg?react'
 import Tasse from '@assets/images/tasse.svg?react'
+import MiaouTeam from '@assets/images/miaouTeam.svg?react'
 import { useAnimationStore } from '../AnimationStore'
 
 
@@ -14,39 +15,32 @@ function Hero() {
     console.log(loadingHasAnimated)
 
     if (loadingHasAnimated) {
-      gsap.fromTo(tasseRef.current, {
-        opacity: 0,
-        y: 50,
-        rotate: 15,
-        duration: 1.5,
-        ease: "power3.out",
-      },
-        {
-          opacity: 1,
-          rotate: 0,
-          y: 0
-        }
-      )
+      console.log("")
     }
 
   }, [loadingHasAnimated])
 
 
-  return <section className="hero-pattern h-screen text-text-300">
-    <header className='flex justify-between items-center px-8 pt-4 font-poppins font-semibold'>
+  return <section className="hero-pattern h-screen text-text-300 overflow-hidden">
+    <header className='flex justify-between items-center px-8 pt-10 font-poppins font-semibold'>
       <div>
         <p className='text-lg'>37 rue des miaou, Woippy</p>
       </div>
-      <div>
+      <div className='absolute translate-x-[-50%] left-1/2 translate-y-[-50%] top-14'>
         <LogoCafeRonron className='' />
-      </div>
+      </div> 
       <div>
-        <a href="tel:04 22 33 44 55" className='text-lg'>04 22 33 44 55</a>
+        <a href="tel:0422334455" className='text-lg'>04 22 33 44 55</a>
       </div>
     </header>
-    <div className=''>
-      <Tasse className='absolute bottom-0 left-1/2 -translate-x-1/2 w-48 md:w-82 opacity-0' ref={tasseRef} />
+    
+    <div className="absolute translate-x-[-50%] left-1/2 translate-y-[-50%] top-1/2">
+      <Tasse ref={tasseRef} className="w-48 h-full md:w-92" />
     </div>
+    <div>
+      <MiaouTeam className="absolute bottom-0 left-1/2 transform w-full md:h-48 -translate-x-1/2" />
+    </div>
+
 
   </section>;
 }

@@ -48,3 +48,28 @@ html {
   background-repeat: repeat;
   background-size: auto;
 }
+
+#chat_gris_et_beige {
+  transform: translate(-40%, 30px);
+  transition: transform 0.3s;
+}
+
+#chat_noir {
+  transform: translate(-20%, 30px);
+  transition: transform 0.3s;
+}
+
+#chat_beige_et_marron {
+  transform: translate(25%, 30px);
+  transition: transform 0.3s;   
+}
+
+#chat_gris {
+  transform: translate(40%, 30px);
+  transition: transform 0.3s;
+}
+
+#chat_orange {
+  transform: translate(0%, 30px);
+  transition: transform 0.3s;
+}
