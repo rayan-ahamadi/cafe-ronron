@@ -58,20 +58,18 @@ export default function LoadingSection() {
         svgTextTimeline
             .from(splitCafeGroup, {
                 opacity: 0,
-                duration: 0.5,
                 ease: "linear.inOut",
-                y: 5,
+                y: -20,
                 stagger: 0.1
             }, "+=0.5")
             .from(splitRonronGroup, {
                 opacity: 0,
-                duration: 0.5,
                 ease: "linear.inOut",
-                y: -5,
+                y: -20,
                 stagger: 0.1
             })
             .to(sectionRef.current, {
-                transform: "translateY(-100%)",
+                transform: "translateY(-130%)",
                 duration: 0.5,
             }, "+=0.5")
 
@@ -83,7 +81,7 @@ export default function LoadingSection() {
     }, { scope: sectionRef })
 
     return (
-        <div className="flex justify-center items-center bg-bg-100 absolute top-0 left-0 w-full h-full" ref={sectionRef}>
+        <div className="flex justify-center items-center bg-bg-100 absolute top-0 left-0 w-full h-full z-20" ref={sectionRef}>
             <LogoLoading ref={logoRef} className="h-1/2" />
         </div>
     )
