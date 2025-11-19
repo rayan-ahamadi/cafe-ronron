@@ -49,10 +49,10 @@ function Hero() {
         "instant-i-mask",
         "instant-n-mask",
         "instant-s-mask",
-        "instant-t-mask",
+        "instant-t-mask1",
         "instant-a-mask",
         "instant-n-2-mask",
-        "instant-t-mask1",
+        "instant-t-mask",
         // ronron
         "ronron-r-mask",
         "ronron-o-mask",
@@ -65,12 +65,11 @@ function Hero() {
 
 
       maskIds.forEach(id => {
-        console.log(textSelector(`#${id} .mask`));
+        console.log(textSelector(`#${id} path`));
         textTimeline.fromTo(
-          textSelector(`#${id} path, #${id}`),
+          textSelector(`#${id} path`),
           { drawSVG: "0%", stroke: "#A1A1A1" },
-          { drawSVG: "100%", stroke: "#4A3426" },
-          "-=0.6"
+          { drawSVG: "100%", stroke: "#4A3426", duration: 0.2 },
         );
       }
     );
@@ -130,13 +129,13 @@ function Hero() {
       )
       .from(splitCafeGroup, {
         opacity: 0,
-        ease: "power1.in",
+        ease: "power1.out",
         y: -20,
         stagger: 0.1
       })
       .from(splitRonronGroup, {
         opacity: 0,
-        ease: "power1.in",
+        ease: "power1.out",
         y: -20,
         stagger: 0.1
       })
@@ -179,12 +178,12 @@ function Hero() {
           y: 0,
           duration: 1.5,
           rotate: 0,
-          ease: "power1.out"
+          ease: "power4.out"
         },
         )
         .fromTo(coffeeShadow,
-          { opacity: 0 },
-        { opacity: 0.24, duration: 0.5 },
+        { opacity: 0, x: 50 },
+        { opacity: 0.24, x: 0, duration: 0.8, ease: "power1.out" },
           '-=0.5'
         )
         .fromTo(catGroup,
