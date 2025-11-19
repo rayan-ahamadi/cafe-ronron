@@ -1,16 +1,22 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
 import LogoCafeRonron from '@assets/images/LogoCafeRonron.svg?react'
 import Tasse from '@assets/images/tasse.svg?react'
 import MiaouTeam from '@assets/images/miaouTeam.svg?react'
+import HandWrittenText from '@assets/images/handWrittenText.svg?react'
 import { useAnimationStore } from '../AnimationStore'
 
 
 
 function Hero() {
+  gsap.registerPlugin(DrawSVGPlugin)
+
   const tasseRef = useRef(null)
   const catGroupRef = useRef(null)
+  const textRef = useRef(null)
+
   const { loadingHasAnimated } = useAnimationStore()
   useGSAP(() => {
     const catGroupSelector = gsap.utils.selector(catGroupRef)
@@ -83,7 +89,11 @@ function Hero() {
     <div className="absolute translate-x-[-50%] left-1/2 translate-y-[-50%] top-1/2">
       <Tasse
         ref={tasseRef}
-        className="w-48 h-full md:w-92 opacity-0"
+        className="w-48 h-full md:w-92 opacity-0 z-0"
+      />
+      <HandWrittenText
+        ref={textRef}
+        className="z-5"
       />
     </div>
     <div>
