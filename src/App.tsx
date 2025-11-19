@@ -1,5 +1,4 @@
 import Hero from '@components/Hero';
-import LoadingSection from '@components/LoadingSection';
 import Menu from '@components/Menu';
 import Cats from '@components/Cats';
 import ContactFooter from '@components/ContactFooter';
@@ -8,7 +7,7 @@ function App() {
 
   return (
     <main className="">
-      <LoadingSection />
+      {/* <LoadingSection /> */}
       <Hero />
       <Menu />
       <Cats />
