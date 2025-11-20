@@ -2,20 +2,27 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
+
 import LogoLoading from '@assets/images/logoLoading.svg?react'
 import Tasse from '@assets/images/tasse.svg?react'
 import MiaouTeam from '@assets/images/miaouTeam.svg?react'
 import HandWrittenText from '@assets/images/handWrittenText.svg?react'
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
 
+
+type ScrollTriggerWithSpacer = ScrollTrigger & {
+  pinSpacer?: HTMLElement;
+};
 
 function Hero() {
-  gsap.registerPlugin(DrawSVGPlugin,MorphSVGPlugin);
+  gsap.registerPlugin(DrawSVGPlugin,MorphSVGPlugin,ScrollTrigger);
 
   const tasseRef = useRef(null)
   const catGroupRef = useRef(null)
   const textRef = useRef(null)
+  const sectionRef = useRef(null)
 
   const logoLoadingRef = useRef(null)
   const headerAddressTextRef = useRef(null)
@@ -65,11 +72,10 @@ function Hero() {
 
 
       maskIds.forEach(id => {
-        console.log(textSelector(`#${id} path`));
         textTimeline.fromTo(
           textSelector(`#${id} path`),
           { drawSVG: "0%", stroke: "#A1A1A1" },
-          { drawSVG: "100%", stroke: "#4A3426", duration: 0.2 },
+          { drawSVG: "100%", stroke: "#33231f", duration: 0.2 },
         );
       }
     );
@@ -84,7 +90,6 @@ function Hero() {
     // const patternPaths = coffeePattern.querySelectorAll('path')
 
     const loadingTimeline = gsap.timeline()
-    
     const patternTimeline = gsap.timeline(
       {
         defaults: {
@@ -151,6 +156,10 @@ function Hero() {
           ease: 'power1.out'
         }
       )
+      .from(sectionRef.current,
+        {backgroundImage: 'none'},
+
+      )
       .to(headerAddressTextRef.current,
         {
           opacity: 1,
@@ -178,12 +187,12 @@ function Hero() {
           y: 0,
           duration: 1.5,
           rotate: 0,
-          ease: "power4.out"
+          ease: "power2.out"
         },
         )
         .fromTo(coffeeShadow,
-        { opacity: 0, x: 50 },
-        { opacity: 0.24, x: 0, duration: 0.8, ease: "power1.out" },
+        { opacity: 0, x:50 },
+        { opacity: 0.24, x: 0, duration: 0.5, ease: "power1.out" },
           '-=0.5'
         )
         .fromTo(catGroup,
@@ -193,6 +202,57 @@ function Hero() {
         )
         .add(handWrittenAnimation(), '-=0.5')
 
+      const coffeeZoomTimeline = gsap.timeline(
+    //   {
+    //     scrollTrigger: {
+    //       trigger: sectionRef.current,
+    //       start: "top top",
+    //       end: "+=500%",
+    //       pin: true,
+    //       pinSpacing: true,
+    //       scrub: 1,
+    //   }
+    // }
+    )
+
+
+      coffeeZoomTimeline
+        .fromTo(
+          [textRef.current, logoLoadingRef.current, headerAddressTextRef.current, headerTelTextRef.current],
+          { y: 0, opacity: 1, ease: 'power1.in' },
+          { y: -5, opacity: 0, ease: 'power1.in' },
+        )
+        .fromTo(
+          catGroup,
+          { y: '5%', ease: 'power1.in' },
+          { y: '100%', ease: 'power1.in' },
+        )
+        .to(tasseSelector("#pattern path, #coffee_base path"),
+          { fill: '#dbb27c'},
+        )
+        .to(
+          tasseRef.current,
+          { scale: 50, xPercent: -50, transformOrigin: '50% 50%', ease: 'power1.in' }, 
+        );
+
+        ScrollTrigger.create({
+          animation: coffeeZoomTimeline,
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=3000",
+          pin: true,
+          markers: true,
+          // pinSpacing: true,
+          scrub: 1,
+          onRefresh: (self) => {
+            // const pinSpacer = (self as ScrollTriggerWithSpacer).pinSpacer;
+            // if (pinSpacer) {
+            //   pinSpacer.style.paddingTop = "150vh";
+            //   console.log(pinSpacer)
+            // }
+          }
+        });
+
       // Animation du motif de café
       patternTimeline
         .fromTo(coffeePattern,
@@ -200,11 +260,14 @@ function Hero() {
         { rotate: -5, duration: 5, yoyo: true, repeat: -1, ease: "back.inOut(4)" }
         )
 
+
+      
+
   })
 
 
-  return <section className="hero-pattern h-screen text-text-300 bg-bg-100 overflow-hidden">
-    <header className='flex justify-between items-center px-8 pt-10 font-poppins font-semibold'>
+  return <section ref={sectionRef} className="hero-pattern h-screen text-text-300 bg-bg-100 overflow-hidden">
+    <header className='flex justify-around items-center px-8 pt-10 font-poppins font-semibold'>
       <div>
         <p className='text-lg opacity-0' ref={headerAddressTextRef}>37 rue des miaou, Woippy</p>
       </div>

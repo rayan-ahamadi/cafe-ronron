@@ -8,6 +8,7 @@ function App() {
   return (
     <main className="">
       {/* <LoadingSection /> */}
+      {/* <section className="hero-buffer h-[500px] pointer-events-none top-0 left-0 w-full -z-10"></section> */}
       <Hero />
       <Menu />
       <Cats />
