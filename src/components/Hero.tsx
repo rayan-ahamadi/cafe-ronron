@@ -12,12 +12,13 @@ import HandWrittenText from '@assets/images/handWrittenText.svg?react'
 
 
 
+
 type ScrollTriggerWithSpacer = ScrollTrigger & {
   pinSpacer?: HTMLElement;
 };
 
 function Hero() {
-  gsap.registerPlugin(DrawSVGPlugin,MorphSVGPlugin,ScrollTrigger);
+  gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin, ScrollTrigger);
 
   const tasseRef = useRef(null)
   const catGroupRef = useRef(null)
@@ -37,10 +38,9 @@ function Hero() {
     const tasseSelector = gsap.utils.selector(tasseRef)
     const textSelector = gsap.utils.selector(textRef)
 
-
     function handWrittenAnimation() {
-      const textTimeline = gsap.timeline({defaults: {duration: 0.8, ease: "power1.out"}});
-      textTimeline.to(textRef.current, {autoAlpha: 1})
+      const textTimeline = gsap.timeline({ defaults: { duration: 0.8, ease: "power1.out" } });
+      textTimeline.fromTo(textRef.current, { autoAlpha: 0, opacity: 0 }, { autoAlpha: 1, opacity: 1 });
       const maskIds = [
         // Prenez
         "prenez-p-mask",
@@ -69,18 +69,15 @@ function Hero() {
         "ronron-n-2-mask"
       ];
 
-
-
       maskIds.forEach(id => {
         textTimeline.fromTo(
           textSelector(`#${id} path`),
           { drawSVG: "0%", stroke: "#A1A1A1" },
           { drawSVG: "100%", stroke: "#33231f", duration: 0.2 },
+
         );
       }
-    );
-      
-      // textTimeline.to(textRef.current, {autoAlpha: 0})
+      );
       return textTimeline;
     };
 
@@ -157,26 +154,26 @@ function Hero() {
         }
       )
       .from(sectionRef.current,
-        {backgroundImage: 'none'},
-
+        { backgroundImage: 'none' },
+        ">"
       )
-      .to(headerAddressTextRef.current,
-        {
-          opacity: 1,
-          duration: 1,
-          ease: 'power1.out'
-        },
-        '>'
-      )
-      .to(headerTelTextRef.current,
-        {
-          opacity: 1,
-          duration: 1,
-          ease: 'power1.out'
-        },
+      .from(headerAddressTextRef.current,
+        { opacity: 0, ease: 'power1.out' },
+        // {
+        //   opacity: 1,
+        //   ease: 'power1.out'
+        // },
         '<'
       )
-        .fromTo(tasseRef.current,
+      .from(headerTelTextRef.current,
+        { opacity: 0, ease: 'power1.out' },
+        // {
+        //   opacity: 1,
+        //   ease: 'power1.out'
+        // },
+        '<'
+      )
+      .fromTo(tasseRef.current,
         {
           opacity: 0,
           y: 100,
@@ -189,95 +186,94 @@ function Hero() {
           rotate: 0,
           ease: "power2.out"
         },
-        )
-        .fromTo(coffeeShadow,
-        { opacity: 0, x:50 },
+      )
+      .fromTo(coffeeShadow,
+        { opacity: 0, x: 50 },
         { opacity: 0.24, x: 0, duration: 0.5, ease: "power1.out" },
-          '-=0.5'
-        )
-        .fromTo(catGroup,
+        '-=0.5'
+      )
+      .fromTo(catGroup,
         { opacity: 0, y: "100%", x: 0 },
-        { opacity: 1, y: "5%", x: 0, stagger: 0.3, duration: 0.6, ease: "power1.in", },
-          '-=1'
-        )
-        .add(handWrittenAnimation(), '-=0.5')
+        { opacity: 1, y: "5%", x: 0, stagger: 0.3, duration: 0.5, ease: "power1.in", },
+      )
+    // .add(handWrittenAnimation(), '-=0.5')
 
-      const coffeeZoomTimeline = gsap.timeline(
-    //   {
-    //     scrollTrigger: {
-    //       trigger: sectionRef.current,
-    //       start: "top top",
-    //       end: "+=500%",
-    //       pin: true,
-    //       pinSpacing: true,
-    //       scrub: 1,
-    //   }
-    // }
-    )
+    const coffeeZoomTimeline = gsap.timeline();
 
+    loadingTimeline.eventCallback("onComplete", () => {
+
+      handWrittenAnimation();
 
       coffeeZoomTimeline
         .fromTo(
           [textRef.current, logoLoadingRef.current, headerAddressTextRef.current, headerTelTextRef.current],
-          { y: 0, opacity: 1, ease: 'power1.in' },
+          { y: 0, opacity: 1 },
           { y: -5, opacity: 0, ease: 'power1.in' },
+          0
         )
         .fromTo(
           catGroup,
           { y: '5%', ease: 'power1.in' },
           { y: '100%', ease: 'power1.in' },
+          0
         )
-        .to(tasseSelector("#pattern path, #coffee_base path"),
-          { fill: '#dbb27c'},
+        .fromTo(coffeePattern,
+          { transformOrigin: '50% 50%', rotate: 0, ease: 'power1.in' },
+          { rotate: 360, ease: 'power1.in' },
+        )
+        .to(tasseSelector("#pattern path"),
+          { fill: '#dbb27c' },
+          "<"
         )
         .to(
           tasseRef.current,
-          { scale: 50, xPercent: -50, transformOrigin: '50% 50%', ease: 'power1.in' }, 
+          { scale: 50, xPercent: -50, transformOrigin: '50% 50%', ease: 'power1.in' },
+          "<"
         );
 
-        ScrollTrigger.create({
-          animation: coffeeZoomTimeline,
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=3000",
-          pin: true,
-          markers: true,
-          // pinSpacing: true,
-          scrub: 1,
-          onRefresh: (self) => {
-            // const pinSpacer = (self as ScrollTriggerWithSpacer).pinSpacer;
-            // if (pinSpacer) {
-            //   pinSpacer.style.paddingTop = "150vh";
-            //   console.log(pinSpacer)
-            // }
+      ScrollTrigger.create({
+        animation: coffeeZoomTimeline,
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=4000",
+        pin: true,
+        // markers: true,
+        scrub: 1,
+        onUpdate: () => {
+          const progress = coffeeZoomTimeline.progress();
+          console.log(progress);
+          if (progress > 0.2) {
+            console.log("enter", progress);
+            patternTimeline.pause(1.5);
+          } else {
+            patternTimeline.seek(1.5);
+            patternTimeline.play();
           }
-        });
+        },
+      });
 
       // Animation du motif de café
       patternTimeline
         .fromTo(coffeePattern,
-        { rotate: 5, transformOrigin: "50% 50%", yoyo: true, repeat: -1, ease: "back.inOut(4)" },
-        { rotate: -5, duration: 5, yoyo: true, repeat: -1, ease: "back.inOut(4)" }
-        )
+          { rotate: 5, transformOrigin: "50% 50%", yoyo: true, repeat: -1, ease: "back.inOut(4)" },
+          { rotate: -5, duration: 5, yoyo: true, repeat: -1, ease: "back.inOut(4)" }
+        );
 
+    })
 
-      
-
-  })
+  }, [])
 
 
   return <section ref={sectionRef} className="hero-pattern h-screen text-text-300 bg-bg-100 overflow-hidden">
-    <header className='flex justify-around items-center px-8 pt-10 font-poppins font-semibold'>
+    <header className='flex justify-between md:justify-around items-center px-8 pt-10 font-poppins font-semibold'>
       <div>
-        <p className='text-lg opacity-0' ref={headerAddressTextRef}>37 rue des miaou, Woippy</p>
+        <p className='text-lg' ref={headerAddressTextRef}>37 rue des miaou, Woippy</p>
       </div>
 
-      {/* <LogoCafeRonron className='z-0' /> */}
-      {/* w-22 absolute translate-x-[-50%] left-1/2 translate-y-[-50%] top-14 */}
       <LogoLoading className='absolute' ref={logoLoadingRef} />
 
       <div>
-        <a href="tel:0422334455" className='text-lg opacity-0' ref={headerTelTextRef}>04 22 33 44 55</a>
+        <a href="tel:0422334455" className='text-lg' ref={headerTelTextRef}>04 22 33 44 55</a>
       </div>
     </header>
 
@@ -290,7 +286,7 @@ function Hero() {
     <div className='absolute translate-x-[-50%] left-1/2 translate-y-[-48%] top-1/2'>
       <HandWrittenText
         ref={textRef}
-        className=" z-5 w-64 md:w-300 "
+        className=" z-5 w-64 md:w-300 opacity-0"
       />
     </div>
     <div>
