@@ -6,7 +6,7 @@ import ContactFooter from '@components/ContactFooter';
 function App() {
 
   return (
-    <main className="">
+    <main className="pattern">
       {/* <LoadingSection /> */}
       {/* <section className="hero-buffer h-[500px] pointer-events-none top-0 left-0 w-full -z-10"></section> */}
       <Hero />

@@ -4,18 +4,13 @@ import gsap from 'gsap'
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
+import SplitText from 'gsap/SplitText'
 
 import LogoLoading from '@assets/images/logoLoading.svg?react'
 import Tasse from '@assets/images/tasse.svg?react'
 import MiaouTeam from '@assets/images/miaouTeam.svg?react'
 import HandWrittenText from '@assets/images/handWrittenText.svg?react'
 
-
-
-
-type ScrollTriggerWithSpacer = ScrollTrigger & {
-  pinSpacer?: HTMLElement;
-};
 
 function Hero() {
   gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin, ScrollTrigger);
@@ -24,6 +19,7 @@ function Hero() {
   const catGroupRef = useRef(null)
   const textRef = useRef(null)
   const sectionRef = useRef(null)
+  const menuTextRef = useRef(null)
 
   const logoLoadingRef = useRef(null)
   const headerAddressTextRef = useRef(null)
@@ -204,6 +200,9 @@ function Hero() {
 
       handWrittenAnimation();
 
+      const menuTextSplit = new SplitText(menuTextRef.current, { type: "words,chars" });
+      gsap.set(menuTextRef.current, { perspective: 400 });
+
       coffeeZoomTimeline
         .fromTo(
           [textRef.current, logoLoadingRef.current, headerAddressTextRef.current, headerTelTextRef.current],
@@ -214,7 +213,7 @@ function Hero() {
         .fromTo(
           catGroup,
           { y: '5%', ease: 'power1.in' },
-          { y: '100%', ease: 'power1.in' },
+          { y: '120%', ease: 'power1.in' },
           0
         )
         .fromTo(coffeePattern,
@@ -229,7 +228,16 @@ function Hero() {
           tasseRef.current,
           { scale: 50, xPercent: -50, transformOrigin: '50% 50%', ease: 'power1.in' },
           "<"
-        );
+        )
+        .to(menuTextRef.current,
+          { opacity: 1, ease: 'power1.in' },
+        )
+        .fromTo(
+          menuTextSplit.chars,
+          { opacity: 0.3 },
+          { opacity: 1, stagger: 0.05, ease: 'power1.out' },
+          "<"
+        )
 
       ScrollTrigger.create({
         animation: coffeeZoomTimeline,
@@ -264,7 +272,7 @@ function Hero() {
   }, [])
 
 
-  return <section ref={sectionRef} className="hero-pattern h-screen text-text-300 bg-bg-100 overflow-hidden">
+  return <section ref={sectionRef} className="pattern h-screen text-text-300 bg-bg-100 overflow-hidden">
     <header className='flex justify-between md:justify-around items-center px-8 pt-10 font-poppins font-semibold'>
       <div>
         <p className='text-lg' ref={headerAddressTextRef}>37 rue des miaou, Woippy</p>
@@ -295,6 +303,9 @@ function Hero() {
         ref={catGroupRef}
       />
     </div>
+    <h2 id="menu" className="absolute w-1/2 translate-x-[-50%] left-1/2 translate-y-[-48%] top-1/2 font-poppins font-semibold text-2xl md:text-5xl text-center opacity-0" ref={menuTextRef}>
+      Profitez de notre menu délicieux et varié, conçu pour satisfaire toutes vos envies caféinées et gourmandes.
+    </h2>
 
 
   </section>;
