@@ -5,6 +5,7 @@ import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 import SplitText from 'gsap/SplitText'
+import { useAnimationStore } from '../AnimationStore';
 
 import LogoLoading from '@assets/images/logoLoading.svg?react'
 import Tasse from '@assets/images/tasse.svg?react'
@@ -14,6 +15,7 @@ import HandWrittenText from '@assets/images/handWrittenText.svg?react'
 
 function Hero() {
   gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin, ScrollTrigger);
+  const { setLoadingHasAnimated } = useAnimationStore();
 
   const tasseRef = useRef(null)
   const catGroupRef = useRef(null)
@@ -199,6 +201,7 @@ function Hero() {
     loadingTimeline.eventCallback("onComplete", () => {
 
       handWrittenAnimation();
+      setLoadingHasAnimated(true);
 
       const menuTextSplit = new SplitText(menuTextRef.current, { type: "words,chars" });
       gsap.set(menuTextRef.current, { perspective: 400 });
@@ -243,13 +246,13 @@ function Hero() {
         animation: coffeeZoomTimeline,
         trigger: sectionRef.current,
         start: "top top",
-        end: "+=4000",
+        end: "+=2000",
         pin: true,
         // markers: true,
         scrub: 1,
+        invalidateOnRefresh: true,
         onUpdate: () => {
           const progress = coffeeZoomTimeline.progress();
-          console.log(progress);
           if (progress > 0.2) {
             console.log("enter", progress);
             patternTimeline.pause(1.5);
