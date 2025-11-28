@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useAnimationStore } from './AnimationStore';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
+import Lenis from 'lenis';
 
 
 function App() {
@@ -14,7 +15,22 @@ function App() {
   ScrollTrigger.clearScrollMemory("manual");
 
   useEffect(() => {
-    console.log("loadingHasAnimated in App:", loadingHasAnimated);
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      smoothTouch: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
     if (!loadingHasAnimated) {
       document.documentElement.style.overflowY = 'hidden';
     } else {

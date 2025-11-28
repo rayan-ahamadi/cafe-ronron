@@ -157,18 +157,10 @@ function Hero() {
       )
       .from(headerAddressTextRef.current,
         { opacity: 0, ease: 'power1.out' },
-        // {
-        //   opacity: 1,
-        //   ease: 'power1.out'
-        // },
         '<'
       )
       .from(headerTelTextRef.current,
         { opacity: 0, ease: 'power1.out' },
-        // {
-        //   opacity: 1,
-        //   ease: 'power1.out'
-        // },
         '<'
       )
       .fromTo(tasseRef.current,
@@ -192,9 +184,15 @@ function Hero() {
       )
       .fromTo(catGroup,
         { opacity: 0, y: "100%", x: 0 },
-        { opacity: 1, y: "5%", x: 0, stagger: 0.3, duration: 0.5, ease: "power1.in", },
+        { opacity: 1, y: "5%", x: 0, stagger: 0.3, duration: 0.4, ease: "power1.in", },
       )
-    // .add(handWrittenAnimation(), '-=0.5')
+
+    // Animation du motif de café
+    patternTimeline
+      .fromTo(coffeePattern,
+        { rotate: 5, transformOrigin: "50% 50%", yoyo: true, repeat: -1, ease: "back.inOut(4)" },
+        { rotate: -5, duration: 5, yoyo: true, repeat: -1, ease: "back.inOut(4)" }
+      );
 
     const coffeeZoomTimeline = gsap.timeline();
 
@@ -204,7 +202,6 @@ function Hero() {
       setLoadingHasAnimated(true);
 
       const menuTextSplit = new SplitText(menuTextRef.current, { type: "words,chars" });
-      gsap.set(menuTextRef.current, { perspective: 400 });
 
       coffeeZoomTimeline
         .fromTo(
@@ -254,7 +251,6 @@ function Hero() {
         onUpdate: () => {
           const progress = coffeeZoomTimeline.progress();
           if (progress > 0.2) {
-            console.log("enter", progress);
             patternTimeline.pause(1.5);
           } else {
             patternTimeline.seek(1.5);
@@ -263,12 +259,7 @@ function Hero() {
         },
       });
 
-      // Animation du motif de café
-      patternTimeline
-        .fromTo(coffeePattern,
-          { rotate: 5, transformOrigin: "50% 50%", yoyo: true, repeat: -1, ease: "back.inOut(4)" },
-          { rotate: -5, duration: 5, yoyo: true, repeat: -1, ease: "back.inOut(4)" }
-        );
+
 
     })
 

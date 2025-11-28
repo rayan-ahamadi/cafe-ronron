@@ -4,19 +4,22 @@
 html {
   height: 100%;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* hide page scrollbar */
-html { scrollbar-width: none; } /* Firefox */
-body { -ms-overflow-style: none; } /* IE and Edge */
-body::-webkit-scrollbar, body::-webkit-scrollbar-button { display: none; } /* Chrome */
+/*
+html { scrollbar-width: none; } 
+body { -ms-overflow-style: none; }
+body::-webkit-scrollbar, body::-webkit-scrollbar-button { display: none; } 
+*/
 /* end hide page scrollbar */
 
 @font-face {
   font-family: "Clatonia";
   font-style: normal;
   font-weight: normal;
-  src: url("assets/fonts/Clatonia.ttf") format("truetype");
+  src: url("./assets/fonts/Claytonia/ClaytoniaDEMO.ttf") format("truetype");
 }
 
 @theme {
