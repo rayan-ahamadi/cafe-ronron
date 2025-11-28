@@ -16,6 +16,7 @@ import HandWrittenText from '@assets/images/handWrittenText.svg?react'
 function Hero() {
   gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin, ScrollTrigger);
   const { setLoadingHasAnimated } = useAnimationStore();
+  const { setHeroPinEnded } = useAnimationStore();
 
   const tasseRef = useRef(null)
   const catGroupRef = useRef(null)
@@ -123,7 +124,7 @@ function Hero() {
         {
           scale: 1,
           opacity: 1,
-          duration: 1.5,
+          duration: 1,
           ease: 'back.inOut'
         },
       )
@@ -147,7 +148,7 @@ function Hero() {
           yPercent: -50,  // translate-y-[-50%]
           left: '50%',    // left-1/2
           top: '3.5rem',  // top-14
-          duration: 1.5,
+          duration: 1,
           ease: 'power1.out'
         }
       )
@@ -184,7 +185,7 @@ function Hero() {
       )
       .fromTo(catGroup,
         { opacity: 0, y: "100%", x: 0 },
-        { opacity: 1, y: "5%", x: 0, stagger: 0.3, duration: 0.4, ease: "power1.in", },
+        { opacity: 1, y: "5%", x: 0, stagger: 0.2, duration: 0.4, ease: "power1.in", },
       )
 
     // Animation du motif de café
@@ -245,6 +246,8 @@ function Hero() {
         start: "top top",
         end: "+=2000",
         pin: true,
+        anticipatePin: 1,
+        pinSpacing: true,
         // markers: true,
         scrub: 1,
         invalidateOnRefresh: true,
@@ -256,6 +259,14 @@ function Hero() {
             patternTimeline.seek(1.5);
             patternTimeline.play();
           }
+        },
+        // mark when the pinned scroll has been left so other sections can safely initialize
+        onLeave: () => {
+          setHeroPinEnded(true);
+        },
+        onLeaveBack: () => {
+          // if user scrolls back up into the pinned area, mark as not ended
+          setHeroPinEnded(false);
         },
       });
 

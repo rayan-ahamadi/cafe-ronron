@@ -15,6 +15,15 @@ function App() {
   ScrollTrigger.clearScrollMemory("manual");
 
   useEffect(() => {
+    if (!loadingHasAnimated) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -22,21 +31,21 @@ function App() {
       smoothTouch: false,
     });
 
-    function raf(time) {
+    let rafId: number;
+    function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-  }, []);
+    rafId = requestAnimationFrame(raf);
 
-  useEffect(() => {
-    if (!loadingHasAnimated) {
-      document.documentElement.style.overflowY = 'hidden';
-    } else {
-      // Restaure le scroll vertical une fois l'animation de chargement terminée
-      document.documentElement.style.overflowY = 'auto';
-    }
+    // ensure ScrollTrigger recalculates positions once Lenis is running
+    ScrollTrigger.refresh();
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, [loadingHasAnimated]);
 
 
