@@ -5,18 +5,27 @@ import SplitText from "gsap/SplitText";
 import { useRef, useEffect } from "react";
 import { useAnimationStore } from '../AnimationStore';
 
+import Cappucino from '@assets/images/menu/cappucino.jpeg'
+import LatteTiramisu from '@assets/images/menu/latte-tiramisu.jpeg'
+import Tiramisu from '@assets/images/menu/tiramisu.jpeg'
+
 
 
 function Menu() {
   gsap.registerPlugin(ScrollTrigger, SplitText);
   const { heroPinEnded } = useAnimationStore();
+
   const coffeeH2Ref = useRef(null);
   const dessertH2Ref = useRef(null);
   const coffeeContainerRef = useRef(null);
   const dessertContainerRef = useRef(null);
+  const animatedImageRef = useRef(null);
+
+  const menuImageRef = useRef(null);
 
   const coffeeSelector = gsap.utils.selector(coffeeContainerRef);
   const dessertSelector = gsap.utils.selector(dessertContainerRef);
+  const menuImageSelector = gsap.utils.selector(menuImageRef);
 
   const menuData = {
     coffees: [
@@ -162,18 +171,37 @@ function Menu() {
       );
     });
 
-    // return () => {
-    //   if (coffeeH2ScrollTrigger) coffeeH2ScrollTrigger.kill();
-    //   if (tween) tween.kill();
-    // };
+    // Animation des images du menu
+    const menuImages = menuImageSelector("img");
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: animatedImageRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        markers: true,
+        scrub: true,
+      }
+    });
+
+    menuImages.forEach((img, index) => {
+      tl.fromTo(
+        img,
+        { y: 80, opacity: 0 },
+        { y: 0, opacity: 1, rotate: index % 2 == 1 ? 5 : -5, duration: 1, ease: "power2.out" },
+        index * 2
+      );
+    });
+
+
   }, [heroPinEnded]);
 
   return <section className="bg-bg-300 text-text-300">
-    <div id="container" className="flex flex-row justify-between items-center px-8 py-16">
-      <div id="menu-list" className="flex flex-col gap-12">
+    <div id="container" className="flex flex-row justify-between items-start px-8 py-16" ref={animatedImageRef}>
+      <div id="menu-list" className="flex flex-col gap-12 flex-1">
         <div id="coffees" ref={coffeeContainerRef}>
           <h2 ref={coffeeH2Ref} className="text-6xl font-semibold mb-6 font-clatonia">Nos Cafés :</h2>
-          <ul >
+          <ul>
             {menuData.coffees.map((item, index) => (
               <li key={index} className="flex flex-col mb-6 border-b-1 border-primary-100 pb-8" style={{ opacity: 0, transform: 'translateY(-20px)' }}>
                 <div className="flex justify-start items-baseline">
@@ -208,7 +236,13 @@ function Menu() {
           </ul>
         </div>
       </div>
-      <div id="animated-image-container"></div>
+      <div id="animated-image-container" className="flex-1 ml-12 sticky top-1/3">
+        <div className="hidden md:flex flex-col items-center gap-8 " ref={menuImageRef}>
+          <img src={Cappucino} alt="Cappucino" className="opacity-0 absolute w-64 h-70 border-x-4 border-t-4 border-12 border-white z-0" />
+          <img src={LatteTiramisu} alt="Latte Tiramisu" className="opacity-0 absolute w-64 h-70 border-x-4 border-t-4 border-12 border-white z-10" />
+          <img src={Tiramisu} alt="Tiramisu" className="opacity-0 absolute w-64 h-70 border-x-4 border-t-4 border-12 border-white z-20" />
+        </div>
+      </div>
     </div>
   </section>;
 }

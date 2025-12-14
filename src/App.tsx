@@ -21,8 +21,9 @@ function App() {
       return;
     }
 
-    document.documentElement.style.overflow = 'auto';
-    document.body.style.overflow = 'auto';
+    // Auto peut poser problème avec position:sticky
+    document.documentElement.style.overflow = 'visible';
+    document.body.style.overflow = 'visible';
 
     const lenis = new Lenis({
       duration: 1.2,

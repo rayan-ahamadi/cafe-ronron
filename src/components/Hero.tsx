@@ -164,6 +164,11 @@ function Hero() {
         { opacity: 0, ease: 'power1.out' },
         '<'
       )
+      .fromTo(catGroup,
+        { opacity: 0, y: "100%", x: 0 },
+        { opacity: 1, y: "5%", x: 0, stagger: 0.2, duration: 0.4, ease: "power1.in", },
+        '<'
+      )
       .fromTo(tasseRef.current,
         {
           opacity: 0,
@@ -183,10 +188,7 @@ function Hero() {
         { opacity: 0.24, x: 0, duration: 0.5, ease: "power1.out" },
         '-=0.5'
       )
-      .fromTo(catGroup,
-        { opacity: 0, y: "100%", x: 0 },
-        { opacity: 1, y: "5%", x: 0, stagger: 0.2, duration: 0.4, ease: "power1.in", },
-      )
+
 
     // Animation du motif de café
     patternTimeline
