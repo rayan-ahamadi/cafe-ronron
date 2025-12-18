@@ -9,6 +9,8 @@ import Cappucino from '@assets/images/menu/cappucino.jpeg'
 import LatteTiramisu from '@assets/images/menu/latte-tiramisu.jpeg'
 import Tiramisu from '@assets/images/menu/tiramisu.jpeg'
 
+import Separator from "@assets/images/goutte3.svg?react";
+
 
 
 function Menu() {
@@ -20,6 +22,7 @@ function Menu() {
   const coffeeContainerRef = useRef(null);
   const dessertContainerRef = useRef(null);
   const animatedImageRef = useRef(null);
+  const separatorRef = useRef(null);
 
   const menuImageRef = useRef(null);
 
@@ -188,16 +191,29 @@ function Menu() {
       tl.fromTo(
         img,
         { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, rotate: index % 2 == 1 ? 5 : -5, duration: 1, ease: "power2.out" },
+        { y: index == 0 ? 30 : 0, opacity: 1, rotate: index % 2 == 1 ? 5 : index !== 0 ? -5 : 0, duration: 1, ease: "power2.out" },
         index * 2
       );
+
+      if (index == 0) {
+        tl.to(
+          img,
+          { rotate: -5 }
+        );
+      }
     });
+    tl.fromTo(
+      separatorRef.current,
+      { y: -100 },
+      { y: 0, duration: 1, ease: "bounce.out" },
+      "-=2"
+    );
 
 
   }, [heroPinEnded]);
 
   return <section className="bg-bg-300 text-text-300">
-    <div id="container" className="flex flex-row justify-between items-start px-8 py-16" ref={animatedImageRef}>
+    <div id="container" className="flex flex-row justify-between items-start px-8 py-16 relative z-10" ref={animatedImageRef}>
       <div id="menu-list" className="flex flex-col gap-12 flex-1">
         <div id="coffees" ref={coffeeContainerRef}>
           <h2 ref={coffeeH2Ref} className="text-6xl font-semibold mb-6 font-clatonia">Nos Cafés :</h2>
@@ -244,6 +260,7 @@ function Menu() {
         </div>
       </div>
     </div>
+    <Separator className="w-full fill-bg-300 absolute z-0" ref={separatorRef} />
   </section>;
 }
 

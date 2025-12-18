@@ -182,6 +182,7 @@ function Hero() {
           rotate: 0,
           ease: "power2.out"
         },
+        '-=1.0'
       )
       .fromTo(coffeeShadow,
         { opacity: 0, x: 50 },
